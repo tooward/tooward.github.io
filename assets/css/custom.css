@@ -38,8 +38,39 @@ body{padding-top:70px}
   box-shadow: none;
 }
 
+/* Wrapper used to position a heading over the image */
+.hero-photo-wrap{
+  position: relative;
+  display: inline-block; /* shrink to image width */
+}
+
+.hero-top-left{
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  margin: 0;
+  /* remove boxed background / border look */
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  color: #444;
+  /* use the same font stack as the hero subtitle */
+  font-family: 'Lato', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  font-weight:400;
+  /* inset from the left edge of the image */
+  padding-left: 1rem;
+  /* doubled size as requested */
+  font-size: 2.5rem;
+}
+
 .hero h1{font-family:'Playfair Display', serif; font-weight:700; font-size:2.6rem}
-.hero p.lead{font-size:1.05rem; color:#444}
+.hero p.lead{
+  font-size:2rem; /* larger as requested */
+  color:#444;
+  text-align: right; /* align to the right of the hero area */
+  padding-right: 3rem; /* add space on the right */
+}
 
 /* Collage styles for book card */
 .collage{
@@ -64,3 +95,176 @@ body{padding-top:70px}
   .collage{ flex-direction:row }
   .collage img{ height:160px }
 }
+
+/* Make the hero subtitle smaller and centered on very small screens */
+@media (max-width: 480px){
+  .hero p.lead{
+  font-size:1.05rem;
+  text-align: center;
+  padding-right: 0; /* remove extra padding on small screens */
+  }
+}
+
+/* Supplementary table for book details */
+.supplementary-table{
+  font-size:0.85rem; /* smaller font for supplementary info */
+  width:100%;
+  border-collapse:collapse;
+  color:#333;
+}
+.supplementary-table td{
+  padding:4px 6px;
+  vertical-align:top;
+  border-bottom:1px solid rgba(0,0,0,0.06);
+}
+.supplementary-table td:first-child{
+  width:38%;
+  font-weight:600;
+  color:#111;
+}
+.supplementary-table tr:last-child td{ border-bottom: none }
+
+/* Link styles: consistent accent color and dashed underline */
+/* Links inside paragraphs: black text with dashed underline */
+p a, p a:link, p a:visited{
+  color: #000;
+  text-decoration: underline dashed #000;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 150ms ease, text-decoration-color 150ms ease;
+}
+
+p a:hover, p a:active{
+  color: #000;
+  text-decoration-color: #000;
+}
+
+/* Visible focus state for keyboard users on paragraph links */
+p a:focus-visible{
+  outline: 3px solid rgba(0,0,0,0.12);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* Make 'Buy' buttons inside cards appear gray (text + outline) */
+.card .btn-outline-primary{
+  color: #6c757d; /* bootstrap secondary gray */
+  border-color: #6c757d;
+  background-color: transparent;
+}
+.card .btn-outline-primary:hover,
+.card .btn-outline-primary:focus{
+  color: #6c757d;
+  border-color: #6c757d;
+  background-color: rgba(108,117,125,0.06);
+}
+.card .btn-outline-primary:focus{
+  box-shadow: 0 0 0 0.2rem rgba(108,117,125,0.12);
+}
+
+/* Show/hide the navbar title depending on whether the hero is visible.
+   When the hero is on-screen we hide the brand to avoid duplicated titles.
+   When scrolled to any other section (e.g. Books), the brand fades in. */
+.navbar-brand{
+  transition: opacity 200ms ease, transform 200ms ease;
+  will-change: opacity, transform;
+}
+.navbar-brand.hidden-in-hero{
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+}
+.navbar-brand.visible{
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+/* Resources section styles */
+.resources-grid .resource-card{ overflow:hidden; border-radius:6px; }
+.resource-media{
+  width:100%;
+  height:160px;
+  background-size:cover;
+  background-position:center;
+  display:block;
+}
+.resource-media{ position:relative }
+.resource-overlay{ position:absolute; left:0; top:0; width:100%; }
+.resource-overlay h5{ margin:0; padding:0.6rem 0.75rem; color:#fff; font-weight:700; background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.18)); }
+.resource-title{
+  margin:0 0 0.5rem 0;
+  font-size:1rem;
+  font-weight:700;
+}
+.resource-body{ background:#fff }
+
+/* Match the card buy button style: gray outline + subtle hover */
+.resource-download{
+  color: #6c757d;
+  border-color: #6c757d;
+}
+.resource-download:hover,
+.resource-download:focus{
+  background-color: rgba(108,117,125,0.06);
+  color: #6c757d;
+  border-color: #6c757d;
+}
+
+@media (min-width: 768px){
+  .resource-media{ height:180px }
+}
+
+/* Make the Resources section fill the visible viewport (account for fixed navbar) */
+#resources{
+  min-height: calc(100vh - 70px);
+  position: relative; /* allow absolutely positioned footer inside the section */
+}
+
+#resources .container{
+  /* make the container fill the section so footer can sit at the bottom */
+  min-height: 100%;
+  padding-top: 3rem;
+  /* ensure space at the bottom equals roughly the footer height + breathing room */
+  padding-bottom: 360px; /* increased to push footer further down */
+  position: relative; /* establish local stacking context for footer */
+}
+
+/* Ensure resource cards don't collapse if the section is tall */
+.resources-grid .resource-card{ display:flex; flex-direction:column; }
+
+/* Small decorative icons along the bottom of the Resources section */
+.resources-footer{
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 0; /* align with container edges */
+  pointer-events: none; /* decorative only by default */
+}
+.resource-footer-img{
+  width:116px; /* doubled size */
+  height:auto;
+  opacity:0.85;
+  filter: saturate(0.9);
+  pointer-events: auto; /* allow interactions if needed */
+}
+
+@media (max-width: 768px){
+  .resource-footer-img{ width:96px }
+  /* slightly reduce bottom spacing on smaller screens */
+  #resources .container{ padding-bottom: 220px }
+}
+
+@media (max-width: 576px){
+  .resources-footer{ justify-content:space-around }
+  .resource-footer-img{ width:84px }
+  #resources .container{ padding-bottom: 200px }
+}
+
+
+
